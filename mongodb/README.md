@@ -32,6 +32,12 @@ Afin de répondre aux différents problèmes, vous allez avoir besoin de créer 
 À vous de jouer ! Écrivez les requêtes MongoDB permettant de résoudre les problèmes posés.
 
 ```
+Lancer import.js pour insérer les données.
+
+Créationd d'un index pour la première requête :
+db.calls.createIndex( { location : "2dsphere" } )
+
+
 Appels dans les 500 mètres autour de Lansdale :
 db.calls.count(
    {
@@ -72,6 +78,9 @@ db.calls.aggregate  (
         }
     ]
 )
+
+Création d'un index pour la dernière requête avec recherche de texte :
+db.calls.createIndex( { title : "text" } )
 
 Les trois villes les plus appelées pour overdose :
 db.calls.aggregate (
