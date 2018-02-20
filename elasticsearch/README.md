@@ -21,8 +21,7 @@ GET <nom de votre index>/_count
 
 À vous de jouer ! Écrivez les requêtes ElasticSearch permettant de résoudre les problèmes posés.
 
-```
-TODO : ajouter les requêtes ElasticSearch ici
+
 Lancer import.js pour importer les données
 
 #Compter le nombre d'appel autour de Lansdale dans un rayon de 500 mètres :
