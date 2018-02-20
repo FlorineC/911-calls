@@ -10,7 +10,34 @@ var esClient = new elasticsearch.Client({
 // Création de l'indice
 esClient.indices.create({ index: '911calls' }, (err, resp) => {
   if (err) console.trace(err.message);
+  if (!err) {
+    createMapping();
+  }
 });
+
+function createMapping() {
+  esClient.indices.putMapping({
+    index: '911calls',
+    type: 'call',
+    body: {
+      properties: {
+        "pin": {
+          "properties": {
+            "location": {
+              "type": "geo_point"
+            }
+          }
+        },
+        "timeStamp": {
+          "type": "date",
+          "format": "yyyy-MM-dd HH:mm:ss"
+        }
+      }
+    }
+  });
+}
+
+
 
 let calls = [];
 fs.createReadStream('../911.csv')
@@ -18,11 +45,16 @@ fs.createReadStream('../911.csv')
   .on('data', data => {
     // TODO extract one line from CSV
     calls.push({
-      lat: data.lat,
-      lng: data.lng,
+      pin: {
+        location: {
+          lat: data.lat,
+          lon: data.lng
+        }
+      },
       desc: data.desc,
       zip: data.zip,
-      title: data.title,
+      title_cat: data.title.split(':')[0],
+      title_infos: data.title.split(':')[1],
       timeStamp: data.timeStamp,
       twp: data.twp,
       addr: data.addr
@@ -39,9 +71,9 @@ fs.createReadStream('../911.csv')
 // Fonction utilitaire permettant de formatter les données pour l'insertion "bulk" dans elastic
 function createBulkInsertQuery(calls) {
   const body = calls.reduce((acc, call) => {
-    const { lat, lng, desc, zip, title, timeStamp, twp, addr } = call;
+    const { pin, desc, zip, title_cat, title_infos, timeStamp, twp, addr } = call;
     acc.push({ index: { _index: '911calls', _type: 'call' } })
-    acc.push({ lat, lng, desc, zip, title, timeStamp, twp, addr })
+    acc.push({ pin, desc, zip, title_cat, title_infos, timeStamp, twp, addr })
     return acc
   }, []);
 
