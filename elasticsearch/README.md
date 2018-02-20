@@ -24,7 +24,7 @@ GET <nom de votre index>/_count
 
 Lancer import.js pour importer les données
 
-#Compter le nombre d'appel autour de Lansdale dans un rayon de 500 mètres :
+# Compter le nombre d'appel autour de Lansdale dans un rayon de 500 mètres :
 Dans Kibana, lancer :
 ```
 GET /911calls/call/_search
@@ -48,7 +48,7 @@ GET /911calls/call/_search
 }
  ```
 
- #Compter le nombre d'appel par catégorie :
+ # Compter le nombre d'appel par catégorie :
  Dans Kibana, lancer :
 ```
  GET /911calls/call/_search?size=0
@@ -82,7 +82,7 @@ GET /911calls/call/_search
 }
 ```
 
-#Trouver les 3 mois ayant comptabiliser le plus d'appels :
+# Trouver les 3 mois ayant comptabiliser le plus d'appels :
  Dans Kibana, lancer :
 ```
 POST /911calls/call/_search?size=0
@@ -101,7 +101,7 @@ POST /911calls/call/_search?size=0
 }
 ```
 
-#Trouver le top 3 des villes avec le plus d'appel pour overdose :
+# Trouver le top 3 des villes avec le plus d'appel pour overdose :
  Dans Kibana, lancer :
 ```
 GET /911calls/call/_search?size=0
