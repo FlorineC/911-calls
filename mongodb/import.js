@@ -9,6 +9,22 @@ var emptyToNull = function(str) {
     return (str && str.trim() !== "") ? str : null;
   }
 
+ var buildDate = function(data){
+    var year; var month; var day;
+    var date = data.timeStamp;
+    dateElement = date.split(" ");
+    dateElements = dateElement[0].split("-");
+    year = parseInt(dateElements[0]);
+    month = dateElements[1]-1;
+    day = parseInt(dateElements[2]);
+
+    var time = dateElement[1].split(":");
+    var hour = parseInt(time[0]);
+    var minutes = parseInt(time[1]);
+    
+    return new Date(year,month,day, hour, minutes)
+} 
+
 var buildLocation = function(data) {
     var lon = emptyToNull(data["lng"]);
     var lat = emptyToNull(data["lat"]);
@@ -27,7 +43,7 @@ var insertCalls = function(db, callback) {
                 "desc": data.desc,
                 "zip": data.zip,
                 "title": data.title,
-                "timeStamp": data.timeStamp,
+                "timeStamp": buildDate(data),
                 "twp": data.twp,
                 "addr": data.addr
             }; // TODO créer l'objet call à partir de la ligne

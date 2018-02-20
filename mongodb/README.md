@@ -47,6 +47,61 @@ db.calls.count(
      }
    }
 )
+
+Nombre d'appels par catégorie :
+db.calls.count({ title: { $in: [/^EMS:/]}})
+db.calls.count({ title: { $in: [/^Fire:/]}})
+db.calls.count({ title: { $in: [/^Traffic:/]}})
+
+Les trois mois pendant lesquels il y a eu le plus d'appels :
+db.calls.aggregate  ( 
+    [
+        {
+            $group: {
+                _id : { month: { $month: "$timeStamp" }, year: { $year: "$timeStamp" } },
+                count: { $sum: 1 }
+            }
+        },
+        {
+            $sort: {
+                count: -1
+            }
+        },
+        {
+            $limit: 3
+        }
+    ]
+)
+
+Les trois villes les plus appelées pour overdose :
+db.calls.aggregate (
+    [
+        {
+            $match: {
+                $text: {
+                $search: "overdose"
+                }
+            }
+            
+        },
+        {
+            $group:{
+                _id: "$twp",
+                count: {$sum: 1}
+            }
+        },
+        {
+            $sort: {
+                count: -1
+            }
+        },
+        {
+            $limit: 3
+        }
+
+    ]
+)
+
 ```
 
 Vous allez sûrement avoir besoin de vous inspirer des points suivants de la documentation :
